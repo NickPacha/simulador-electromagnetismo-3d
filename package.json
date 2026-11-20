@@ -1,0 +1,27 @@
+{
+  "name": "simulador-campos-em-3d",
+  "version": "1.0.0",
+  "description": "Simulador interactivo de campos eléctricos y magnéticos en 3D — Física 2",
+  "main": "src/main.js",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --watch",
+    "test": "node --test tests/*.test.js",
+    "validar": "node validacion/exportar.mjs && python3 validacion/validar.py"
+  },
+  "keywords": [
+    "física",
+    "electromagnetismo",
+    "simulación",
+    "three.js",
+    "educación"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "type": "module"
+}

@@ -1,0 +1,89 @@
+{
+  "pruebas": [
+    {
+      "prueba": "Potencial de 4 cargas (200 puntos)",
+      "metrica": "error relativo máx.",
+      "valor": 8.990755959210618e-08,
+      "umbral": 1e-07,
+      "aprobado": true,
+      "unidad": ""
+    },
+    {
+      "prueba": "Campo eléctrico de 4 cargas (200 puntos)",
+      "metrica": "error relativo máx.",
+      "valor": 2.4962519072495344e-07,
+      "umbral": 1e-06,
+      "aprobado": true,
+      "unidad": ""
+    },
+    {
+      "prueba": "Dispersión por carga fija: RK4 (JS) vs DOP853 (SciPy)",
+      "metrica": "desviación máx. de posición",
+      "valor": 2.873209447843353e-08,
+      "umbral": 0.0001,
+      "aprobado": true,
+      "unidad": "m"
+    },
+    {
+      "prueba": "Dispersión por carga fija",
+      "metrica": "variación relativa de energía",
+      "valor": 2.696349115137155e-09,
+      "umbral": 1e-06,
+      "aprobado": true,
+      "unidad": ""
+    },
+    {
+      "prueba": "Orden de convergencia de RK4",
+      "metrica": "|orden − 4|",
+      "valor": 0.08014674608847461,
+      "umbral": 0.15,
+      "aprobado": true,
+      "unidad": ""
+    },
+    {
+      "prueba": "Orden de convergencia de Euler",
+      "metrica": "|orden − 1|",
+      "valor": 0.062420807661857314,
+      "umbral": 0.15,
+      "aprobado": true,
+      "unidad": ""
+    },
+    {
+      "prueba": "Cicloide E×B: Boris vs solución analítica",
+      "metrica": "error máx. / radio",
+      "valor": 0.0014517302337638113,
+      "umbral": 0.005,
+      "aprobado": true,
+      "unidad": ""
+    },
+    {
+      "prueba": "Boris en B puro (10⁵ pasos)",
+      "metrica": "deriva relativa de |v|²",
+      "valor": 1.5987211554602254e-14,
+      "umbral": 1e-10,
+      "aprobado": true,
+      "unidad": ""
+    },
+    {
+      "prueba": "Circuito mixto: MNA (JS) vs análisis de mallas (NumPy)",
+      "metrica": "error relativo de voltajes",
+      "valor": 1.5566395908898038e-12,
+      "umbral": 1e-09,
+      "aprobado": true,
+      "unidad": ""
+    },
+    {
+      "prueba": "Biot-Savart: espira (72 seg. del simulador ≈ 64) vs integrales elípticas",
+      "metrica": "error relativo con 64 segmentos",
+      "valor": 0.0007898128754601616,
+      "umbral": 0.001,
+      "aprobado": true,
+      "unidad": ""
+    }
+  ],
+  "orden_rk4": 3.9198532539115254,
+  "orden_euler": 1.0624208076618573,
+  "orden_biot_savart": 2.001814419594328,
+  "deriva_boris": 1.5987211554602254e-14,
+  "deriva_rk4": 8.038682188804547e-05
+}
