@@ -2,7 +2,7 @@
 import { moduleLayout } from '../ui/layout.js';
 import { h, section, slider, select, numberInput, checkbox, resultsTable, theory } from '../ui/dom.js';
 import { si, sci } from '../ui/format.js';
-import { createScene, polyline, lineArrowHeads, textSprite, arrow, THREE } from '../ui/scene3d.js';
+import { createScene, textSprite, arrow, batchedLines, batchedArrowHeads, THREE } from '../ui/scene3d.js';
 import { magneticField, straightWire, circularLoop, solenoid, analytic } from '../core/magnetostatics.js';
 import { traceFieldLine } from '../core/fieldlines.js';
 import { MU0 } from '../core/constants.js';
@@ -108,6 +108,7 @@ export default {
       const inB = (p) => Math.abs(p[0]) < ext + 1 && Math.abs(p[1]) < ext + 1 && Math.abs(p[2]) < ext + 1;
       // referencia para colorear según |B|
       const B0 = Math.hypot(...B(st.src === 'hilo' || st.src === 'dos' ? 1 : 0, 0, st.src === 'hilo' || st.src === 'dos' ? 0 : 0.01)) || 1e-6;
+      const batch = [];
       for (const sd of seeds()) {
         const fw = traceFieldLine(B, sd, { step: 0.05, maxSteps: 1400, inBounds: inB, closeLoop: true });
         let pts = fw.points;
@@ -121,9 +122,10 @@ export default {
           const t = Math.max(0, Math.min(1, 0.5 + 0.35 * Math.log10(Math.hypot(...B(p[0], p[1], p[2])) / B0)));
           cols.push(0.2 + 0.8 * t, 0.55 + 0.4 * t, 1.0);
         });
-        S.world.add(polyline(pts, 0x7dd3fc, 0.95, cols));
-        S.world.add(lineArrowHeads(pts, 0x7dd3fc, 55, 0.14));
+        batch.push({ points: pts, colors: cols });
       }
+      S.world.add(batchedLines(batch, 0x7dd3fc, 0.95));
+      S.world.add(batchedArrowHeads(batch, 0x7dd3fc, 55, 0.14));
       drawConductors();
       if (st.slice) drawSlice(B, B0);
       updateProbe();

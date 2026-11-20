@@ -168,3 +168,50 @@ export function lineArrowHeads(points, color, every = 40, size = 0.12) {
   }
   return group;
 }
+
+/**
+ * Agrupa muchas polilíneas en un único objeto LineSegments (una sola llamada de dibujo).
+ * lines: [{ points: [[x,y,z],...], colors?: [r,g,b, r,g,b, ...] }]
+ */
+export function batchedLines(lines, color = 0xffffff, opacity = 1) {
+  let n = 0;
+  lines.forEach((l) => { n += Math.max(0, l.points.length - 1); });
+  const pos = new Float32Array(n * 6), col = new Float32Array(n * 6);
+  const base = new THREE.Color(color);
+  let k = 0;
+  for (const l of lines) {
+    const p = l.points, c = l.colors;
+    for (let i = 0; i < p.length - 1; i++) {
+      for (const j of [i, i + 1]) {
+        pos[k] = p[j][0]; pos[k + 1] = p[j][1]; pos[k + 2] = p[j][2];
+        if (c) { col[k] = c[j * 3]; col[k + 1] = c[j * 3 + 1]; col[k + 2] = c[j * 3 + 2]; }
+        else { col[k] = base.r; col[k + 1] = base.g; col[k + 2] = base.b; }
+        k += 3;
+      }
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  return new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: opacity < 1, opacity }));
+}
+
+/** Puntas de flecha de muchas líneas en una sola malla instanciada. */
+export function batchedArrowHeads(lines, color, every = 40, size = 0.12) {
+  const items = [];
+  for (const l of lines) {
+    const pts = l.points;
+    for (let i = Math.floor(every / 2); i < pts.length - 1; i += every) {
+      const p = pts[i], q = pts[i + 1];
+      const dir = new THREE.Vector3(q[0] - p[0], q[1] - p[1], q[2] - p[2]);
+      if (dir.lengthSq() > 0) items.push([p, dir.normalize()]);
+    }
+  }
+  const geo = new THREE.ConeGeometry(size * 0.45, size, 10);
+  geo.translate(0, size / 2, 0);
+  const mesh = new THREE.InstancedMesh(geo, new THREE.MeshBasicMaterial({ color }), Math.max(1, items.length));
+  const m = new THREE.Matrix4(), qt = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), one = new THREE.Vector3(1, 1, 1);
+  items.forEach(([p, d], i) => { qt.setFromUnitVectors(up, d); m.compose(new THREE.Vector3(p[0], p[1], p[2]), qt, one); mesh.setMatrixAt(i, m); });
+  mesh.count = items.length;
+  return mesh;
+}

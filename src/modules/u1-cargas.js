@@ -7,7 +7,7 @@ import { electricField, electricPotential, systemEnergy } from '../core/electros
 import { chargeFieldLines } from '../core/fieldlines.js';
 import { marchingSquares } from '../core/contour.js';
 import { K } from '../core/constants.js';
-import { createScene, polyline, lineArrowHeads, textSprite, THREE } from '../ui/scene3d.js';
+import { createScene, textSprite, batchedLines, batchedArrowHeads, THREE } from '../ui/scene3d.js';
 import { MarchingCubes } from 'three/examples/jsm/objects/MarchingCubes.js';
 
 const PRESET_LABELS = [
@@ -321,17 +321,17 @@ export default {
             inBounds: (p) => Math.abs(p[0]) < 6 && Math.abs(p[1]) < 6 && Math.abs(p[2]) < 6,
           });
           nlines = lines.length;
-          for (const ln of lines) {
+          const batch = lines.map((ln) => {
             const cols = [];
             ln.points.forEach((p) => {
               const E = ef(p[0], p[1], p[2]);
               const t = Math.min(1, Math.max(0, Math.log10(Math.hypot(...E) / Vs * 25 + 1) / 1.6));
               cols.push(0.95, 0.75 + 0.2 * t, 0.35 + 0.5 * t);
             });
-            S.world.add(polyline(ln.points, 0xfde68a, 0.9, cols));
-            const pts = ln.sign < 0 ? ln.points.slice().reverse() : ln.points;
-            S.world.add(lineArrowHeads(pts, 0xfde68a, 60, 0.16));
-          }
+            return { points: ln.points, colors: cols };
+          });
+          S.world.add(batchedLines(batch, 0xfde68a, 0.9));
+          S.world.add(batchedArrowHeads(lines.map((ln) => ({ points: ln.sign < 0 ? ln.points.slice().reverse() : ln.points })), 0xfde68a, 60, 0.16));
         }
         if (opts.surfaces && charges.length) {
           const pos = mkCubes(0xf87171), neg = mkCubes(0x60a5fa);
