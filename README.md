@@ -68,6 +68,12 @@ El núcleo físico (`src/core`) no depende del navegador: se puede probar y reut
 
 JavaScript (ES2020), [Three.js](https://threejs.org) para 3D, Canvas 2D para gráficas, esbuild para empaquetar, Node.js para pruebas, Python (NumPy, SciPy, Matplotlib) para la validación.
 
+## Documentación
+
+- [Manual de usuario](docs/Manual_de_usuario.pdf)
+- [Informe técnico](docs/Informe_tecnico.pdf)
+- Capturas de todos los módulos en `docs/img/`
+
 ## Licencia
 
 MIT. Ver `LICENSE`.
