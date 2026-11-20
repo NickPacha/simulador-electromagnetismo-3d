@@ -23,7 +23,7 @@ for (const f of result.outputFiles) {
   if (f.path.endsWith('.js')) js = f.text;
   if (f.path.endsWith('.css')) css = f.text;
 }
-const template = readFileSync('index.html', 'utf8');
+const template = readFileSync('src/template.html', 'utf8');
 const html = template
   .replace('<!-- CSS -->', `<style>${css}</style>`)
   .replace('<!-- JS -->', () => `<script>${js.replace(/<\/script/gi, '<\\/script')}</script>`);

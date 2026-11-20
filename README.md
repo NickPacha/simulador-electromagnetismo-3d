@@ -6,6 +6,8 @@ Aplicación web interactiva para el curso de **Física 2** (Ingeniería de Siste
 
 ## Cómo usarlo
 
+**En línea:** https://nickpacha.github.io/simulador-electromagnetismo-3d/
+
 **Sin instalar nada:** abre `dist/index.html` con doble clic en Chrome, Edge o Firefox. Es un único archivo autocontenido que funciona sin conexión a internet.
 
 **Para desarrollar:**
